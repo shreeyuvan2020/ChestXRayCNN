@@ -2,6 +2,8 @@ ChestXrayCNN (Convolutional Neural Networks)
 This project is a submission for the Model Minds Hackathon.
 Made by shreeyuvan2020 (Shree Yuvan) and Samhith Pola
 
+All imports below can be installed through "pip install -r requirements.txt", this will install all required dependencies for this project.
+
 Imports:
 import torch
 import torch.nn as nn
@@ -12,6 +14,8 @@ from datasets import load_dataset
 from PIL import Image
 import streamlit as st
 
+Run "python -m streamlit run app.py" as this is opens the website and is where the inference is run, running the file normally will not work with Streamlit.
+
 THE DEVELOPERS OF THIS PROJECT ARE NOT LIABLE FOR ANY MALICIOUS AND OR UNINTENDED USE BY THE USER OF THIS PROJECT.
 
-App.py is the website file, it runs the streamlit website, run that.
+
