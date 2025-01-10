@@ -135,5 +135,5 @@ for epoch in range(num_epochs):
 # Final test accuracy
 test_acc = evaluate_model(model, test_loader)
 print(f"Test Accuracy: {test_acc:.2f}%")
-torch.save(model.state_dict(), "C:\Users\yuva\workspace\Main.py\ChestCNN.pth")
+model = torch.save(model.state_dict(), "C:\Users\yuva\workspace\Main.py\ChestCNN.pth")
 
