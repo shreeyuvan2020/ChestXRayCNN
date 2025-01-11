@@ -8,12 +8,20 @@ import torchvision.transforms as transforms
 from PIL import Image
 from datasets import load_from_disk
 import numpy as np
-from test.py import transform
-from torch.optim.lr_scheduler import StepLR
-
+import os
+from torchvision.transforms.functional import to_pil_image
+from torch.optim.lr_scheduler import ReduceLROnPlateau
+transform = transforms.Compose([
+    transforms.Resize((64, 64)),
+    transforms.ToTensor(),
+    transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
+])
 st.title("Chest X-Ray Classification")
-uploaded_file = st.file_uploader("Choose an image...", type=["png", "jpg", "jpeg"])
-submit_button = st.form_submit_button("Submit")
+with st.form("my_form"):
+    uploaded_file = st.file_uploader("Choose an image...", type=["png", "jpg", "jpeg"])
+    submit_button = st.form_submit_button("Submit")
+os.environ["DATASETS_NUM_THREADS"] = "1"
+dataset = load_from_disk("chest_xray_dataset")
 class ChestCNN(nn.Module):
     def __init__(self):
         super(ChestCNN, self).__init__()
@@ -44,15 +52,14 @@ class ChestCNN(nn.Module):
         return x
 
 model = ChestCNN()
-torch.load("best_model.pth")
-model.load_state_dict("best_model.pth")
+state_dict = torch.load("best_model.pth")
+model.load_state_dict(state_dict)
 if submit_button and uploaded_file is not None:
     with torch.no_grad():
-        image = Image.open(uploaded_file)
-        image = transform(image)
-        image = image.unsqueeze(0)
+        image = Image.open(uploaded_file).convert("RGB")
+        image_tensor = transform(image).unsqueeze(0)
         model.eval()
-        raw_output = model(image)
+        raw_output = model(image_tensor)
         probabilities = torch.sigmoid(raw_output)
         predicted = (probabilities > 0.5).float()
         labels = [
@@ -72,7 +79,7 @@ if submit_button and uploaded_file is not None:
     "Pneumonia",
     "Hernia"]
         predicted_labels = [labels[idx] for idx, val in enumerate(predicted[0]) if val == 1]
-
+        st.image(to_pil_image(image_tensor[0]), caption="Uploaded Image.", use_column_width=True)
         st.image(image, caption="Uploaded Image.", use_column_width=True)
         font_size = 70
         if predicted_labels:
