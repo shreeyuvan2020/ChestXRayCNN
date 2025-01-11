@@ -15,6 +15,7 @@ from PIL import Image
 import streamlit as st
 
 Run "python -m streamlit run app.py" as this is opens the website and is where the inference is run, running the file normally will not work with Streamlit.
+Here is the url for the hugging face dataset: https://huggingface.co/datasets/alkzar90/NIH-Chest-X-ray-dataset
 
 THE DEVELOPERS OF THIS PROJECT ARE NOT LIABLE FOR ANY MALICIOUS AND OR UNINTENDED USE BY THE USER OF THIS PROJECT.
 
